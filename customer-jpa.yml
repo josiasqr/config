@@ -1,8 +1,8 @@
 server:
   port: 6000
 spring:
-  datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/client
-    username: root
-    password:
+datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/client
+  username: root
+  password:
