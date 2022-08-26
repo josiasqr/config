@@ -5,3 +5,14 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:4000/eureka
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: micro01
+          uri: lb://MICRO01
+          predicates:
+            - Path=/afiliado/**
