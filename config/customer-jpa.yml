@@ -5,6 +5,9 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:4000/eureka
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/client
