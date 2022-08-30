@@ -14,4 +14,4 @@ spring:
         - id: customer-jpa
           uri: lp://customer-jpa
           predicates:
-            - Path=/customers/**
+            - Path=/**
