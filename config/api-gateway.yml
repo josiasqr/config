@@ -12,6 +12,6 @@ spring:
           enabled: true
       routes:
         - id: customer-jpa
-          uri: lp://customer-jpa
+          uri: http://localhost:6000/
           predicates:
-            - Path=/**
+            - Path=/customers/**
