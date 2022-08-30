@@ -13,6 +13,6 @@ spring:
           enabled: true
       routes:
         - id: customer-jpa
-          uri: lb://customer-jpa
+          uri: http://customer-jpa/
           predicates:
             - Path=/api/v1/customers/**
