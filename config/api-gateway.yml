@@ -12,7 +12,7 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: micro01
-          uri: lb://MICRO01
+        - id: customer-jpa
+          uri: lb://customer-jpa
           predicates:
-            - Path=/afiliado/**
+            - Path=/api/v1/customers/**
