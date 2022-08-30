@@ -11,7 +11,7 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: CUSTOMER-JPA
-          uri: http://CUSTOMER-JPA
+        - id: customer-jpa
+          uri: lp://customer-jpa
           predicates:
             - Path=/customers/**
