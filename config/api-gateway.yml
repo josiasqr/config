@@ -14,4 +14,4 @@ spring:
         - id: customer-jpa
           uri: http://localhost:6000/
           predicates:
-            - Path=/customers/**
+            - Path=/api/v1/customers/**
