@@ -1,5 +1,8 @@
 server:
   port: 3003
+  error:
+    include-message: always
+    include-binding-errors: always
 eureka:
   client:
     serviceUrl:
@@ -11,6 +14,6 @@ spring:
       ddl-auto: update
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/client
+    url: jdbc:mysql://localhost:3306/customer
     username: root
     password:
