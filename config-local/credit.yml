@@ -7,6 +7,4 @@ eureka:
 spring:
   data:
     monogodb:
-      host: localhost
-      port: 27017
       database: credit
