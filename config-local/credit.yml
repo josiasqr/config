@@ -10,6 +10,3 @@ spring:
       host: localhost
       port: 27017
       database: credit
-      #authentication-database: admin
-      #username: root
-      #password: root
