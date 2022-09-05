@@ -23,3 +23,5 @@ spring:
           uri: lb://credit
           predicates:
             - Path=/credits/**
+            - Path=/cards/**
+            - Path=/movements/**
