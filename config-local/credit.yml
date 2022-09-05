@@ -7,4 +7,4 @@ eureka:
 spring:
   data:
     monogodb:
-      database: credit
+      uri: mongodb://localhost:27017/credit
