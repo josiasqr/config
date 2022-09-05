@@ -7,9 +7,9 @@ eureka:
 spring:
   data:
     monogodb:
+      database: account
       host: localhost
       port: 27017
-      database: account
       #authentication-database: admin
-      #username: admin
-      #password: 123456
+      #username: root
+      #password: root
