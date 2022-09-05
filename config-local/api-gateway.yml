@@ -22,6 +22,4 @@ spring:
         - id: credit
           uri: lb://credit
           predicates:
-            - Path=/credits/**
-            - Path=/cards/**
-            - Path=/movements/**
+            - Path=/credits/**, /cards/**, /movements/**
