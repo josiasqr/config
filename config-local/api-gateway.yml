@@ -19,3 +19,7 @@ spring:
           uri: lb://account-bank
           predicates:
             - Path=/accounts/**
+        - id: credit
+          uri: lb://credit
+          predicates:
+            - Path=/credits/**
