@@ -1,0 +1,10 @@
+server:
+  port: 3003
+spring:
+  data:
+    monogodb:
+      uri: mongodb://localhost:27017/customer
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:3001/eureka
