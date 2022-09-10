@@ -8,6 +8,8 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:3001/eureka
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   data:
     monogodb:
       uri: mongodb://localhost:27017/account
