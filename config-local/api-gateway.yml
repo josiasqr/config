@@ -11,12 +11,12 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: customer-jpa
-          uri: lb://customer-jpa
+        - id: customer
+          uri: lb://customer
           predicates:
             - Path=/customers/**
-        - id: customer-jpa
-          uri: lb://account-bank
+        - id: account
+          uri: lb://account
           predicates:
             - Path=/accounts/**
         - id: credit
