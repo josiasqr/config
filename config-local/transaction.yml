@@ -1,5 +1,8 @@
 server:
   port: 3006
+  error:
+    include-message: always
+    include-binding-errors: always
 eureka:
   client:
     serviceUrl:
