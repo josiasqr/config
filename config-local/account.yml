@@ -12,4 +12,5 @@ spring:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   data:
     mongodb:
+      auto-index-creation: true
       uri: mongodb://localhost:27017/account
