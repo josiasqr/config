@@ -2,6 +2,7 @@ server:
   port: 3003
 spring:
   data:
+    auto-index-creation: true
     mongodb:
       uri: "mongodb://localhost:27017/customer"
 eureka:
