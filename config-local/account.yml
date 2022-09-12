@@ -11,5 +11,5 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   data:
-    monogodb:
+    mongodb:
       uri: mongodb://localhost:27017/account
