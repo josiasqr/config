@@ -5,7 +5,7 @@ server:
     include-binding-errors: always
 spring:
   data:
-    monogodb:
+    mongodb:
       uri: mongodb://localhost:27017/credit
 eureka:
   client:
