@@ -3,7 +3,6 @@ server:
 spring:
   data:
     mongodb:
-      auto-index-creation: true
       uri: "mongodb://localhost:27017/customer"
 eureka:
   client:
