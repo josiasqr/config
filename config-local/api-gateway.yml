@@ -19,8 +19,8 @@ spring:
           uri: lb://account
           predicates:
             - Path=/accounts/**
-        - id: credit
-          uri: lb://credit
+        - id: product
+          uri: lb://product
           predicates:
             - Path=/credits/**,/cards/**
         - id: transaction
