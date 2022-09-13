@@ -1,6 +1,10 @@
 server:
   port: 3003
 spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:3007
   data:
     mongodb:
       auto-index-creation: true
@@ -9,10 +13,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:3001/eureka
-boot:
-  admin:
-    client:
-      url: http://localhost:3007
 management:
   endpoints:
     web:
