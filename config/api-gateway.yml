@@ -3,7 +3,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:3001/eureka
+      defaultZone: http://localhost:3001/eureka
 spring:
   cloud:
     gateway:
@@ -11,7 +11,19 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: customer-jpa
-          uri: lb://customer-jpa
+        - id: customer
+          uri: lb://customer
           predicates:
-            - Path=/api/v1/customers/**
+            - Path=/customers/**
+        - id: account
+          uri: lb://account
+          predicates:
+            - Path=/accounts/**
+        - id: product
+          uri: lb://product
+          predicates:
+            - Path=/credits/**,/cards/**
+        - id: transaction
+          uri: lb://transaction
+          predicates:
+            - Path=/transactionAccount/**,/transactionCard/**,/transactionCredit/**,/TransferController/**
