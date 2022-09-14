@@ -26,4 +26,4 @@ spring:
         - id: transaction
           uri: lb://transaction
           predicates:
-            - Path=/transactionAccount/**,/transactionCard/**,/transactionCredit/**,/TransferController/**,/transfers/**
+            - Path=/transactionAccount/**,/transactionCard/**,/transactionCredit/**,/notifications/**,/transfers/**
