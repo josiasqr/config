@@ -11,7 +11,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 @SpringBootApplication
 @EnableKafka
 public class TransactionApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(TransactionApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TransactionApplication.class, args);
+  }
 }

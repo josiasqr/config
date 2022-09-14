@@ -11,38 +11,41 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "transfer")
 public class Transfer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    @Size( min = 5 , max = 8, message = "code min 5 digits and max 8")
-    @Column(unique = true, nullable = false)
-    private String code;
+  @Size(min = 5, max = 8, message = "code min 5 digits and max 8")
+  @Column(unique = true, nullable = false)
+  private String code;
 
-    @Column(nullable = false)
-    private Long origin;
+  @Column(nullable = false)
+  private Long origin;
 
-    @Column(nullable = false)
-    private Long destiny;
+  @Column(nullable = false)
+  private Long destiny;
 
-    @Column(nullable = false)
-    private Double amount;
-    private LocalDateTime registrationDate;
+  @Column(nullable = false)
+  private Double amount;
+  private LocalDateTime registrationDate;
 
-    public boolean validate(Double currentBalance, Double amount){
-        if(currentBalance <= amount){
-            return true;
-        }
-        return false;
+  public boolean validate(Double currentBalance, Double amount) {
+    if (currentBalance <= amount) {
+      return true;
     }
+    return false;
+  }
 
-    public String code(){
-        Random r = new Random();
-        Integer random = r.nextInt(999999);
-        return random.toString();
-    }
+  public String code() {
+    Random r = new Random();
+    Integer random = r.nextInt(999999);
+    return random.toString();
+  }
 }

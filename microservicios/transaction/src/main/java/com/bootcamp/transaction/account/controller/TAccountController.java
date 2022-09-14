@@ -17,49 +17,49 @@ import java.util.List;
 @RestController
 @RequestMapping("/transactionAccount")
 public class TAccountController {
-    @Autowired
-    private TAccountService tAccountService;
+  @Autowired
+  private TAccountService tAccountService;
 
-    public TAccountController(TAccountService tAccountService) {
-        this.tAccountService = tAccountService;
+  public TAccountController(TAccountService tAccountService) {
+    this.tAccountService = tAccountService;
+  }
+
+  @GetMapping
+  public ResponseEntity<List<TAccount>> listTransactions() {
+    return ResponseEntity.ok(tAccountService.listTransactions());
+  }
+
+  @GetMapping("/listTransactionsOfWeek")
+  public ResponseEntity<List<TAccount>> listTransactionsOfWeek() {
+    TAccount tAccount = new TAccount();
+
+    return ResponseEntity.ok(tAccountService.listTransactionsOfWeek(3927198245224716L, tAccount.firstDayWeek(), LocalDateTime.now()));
+  }
+
+  @GetMapping("/numberAccount/{number}")
+  public ResponseEntity<List<TAccount>> listTransactionsNumberAccount(@PathVariable("number") Long number) {
+    return ResponseEntity.ok(tAccountService.listTransactionNumberAccount(number));
+  }
+
+  @GetMapping("/{code}")
+  public ResponseEntity<TAccount> listTransactionsCode(@PathVariable("code") String code) {
+    TAccount tAccount = tAccountService.getCodeTransaction(code);
+
+    if (tAccount == null) {
+      return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<TAccount>> listTransactions(){
-        return ResponseEntity.ok(tAccountService.listTransactions());
+    return ResponseEntity.ok(tAccount);
+  }
+
+  @PostMapping
+  public ResponseEntity<TAccount> createTransaction(@Valid @RequestBody TAccount tAccount, BindingResult errors) {
+    if (errors.hasErrors()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors.getFieldError().getDefaultMessage());
     }
+    tAccount.setCode(tAccount.code());
+    tAccount.setRegistrationDate(LocalDateTime.now());
 
-    @GetMapping("/listTransactionsOfWeek")
-    public ResponseEntity<List<TAccount>> listTransactionsOfWeek(){
-        TAccount tAccount = new TAccount();
-
-        return ResponseEntity.ok(tAccountService.listTransactionsOfWeek(3927198245224716L, tAccount.firstDayWeek(), LocalDateTime.now()));
-    }
-
-    @GetMapping("/numberAccount/{number}")
-    public ResponseEntity<List<TAccount>> listTransactionsNumberAccount(@PathVariable("number") Long number){
-        return ResponseEntity.ok(tAccountService.listTransactionNumberAccount(number));
-    }
-
-    @GetMapping("/{code}")
-    public ResponseEntity<TAccount> listTransactionsCode(@PathVariable("code") String code){
-        TAccount tAccount = tAccountService.getCodeTransaction(code);
-
-        if(tAccount == null){
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(tAccount);
-    }
-
-    @PostMapping
-    public ResponseEntity<TAccount> createTransaction(@Valid @RequestBody TAccount tAccount, BindingResult errors){
-        if (errors.hasErrors()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors.getFieldError().getDefaultMessage());
-        }
-        tAccount.setCode(tAccount.code());
-        tAccount.setRegistrationDate(LocalDateTime.now());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(tAccountService.createTransaction(tAccount));
-    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(tAccountService.createTransaction(tAccount));
+  }
 }

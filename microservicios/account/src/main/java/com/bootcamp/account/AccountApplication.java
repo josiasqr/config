@@ -8,9 +8,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 @EnableEurekaClient
 @SpringBootApplication
 public class AccountApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(AccountApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(AccountApplication.class, args);
+  }
 }

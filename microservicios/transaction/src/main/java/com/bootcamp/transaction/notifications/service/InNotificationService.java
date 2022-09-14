@@ -12,20 +12,20 @@ import java.util.List;
 @Service
 public class InNotificationService implements NotificationService {
 
-    @Autowired
-    private NotificationRepository notificationRepository;
+  @Autowired
+  private NotificationRepository notificationRepository;
 
-    public InNotificationService(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
-    }
+  public InNotificationService(NotificationRepository notificationRepository) {
+    this.notificationRepository = notificationRepository;
+  }
 
-    @Override
-    public List<Notification> listNotifications() {
-        return notificationRepository.findAll();
-    }
+  @Override
+  public List<Notification> listNotifications() {
+    return notificationRepository.findAll();
+  }
 
-    @Override
-    public Notification createNotification(Notification notification) {
-        return notificationRepository.save(notification);
-    }
+  @Override
+  public Notification createNotification(Notification notification) {
+    return notificationRepository.save(notification);
+  }
 }

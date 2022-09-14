@@ -15,25 +15,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/notifications")
 public class NotificationController {
-    @Autowired
-    private NotificationService notificationService;
+  @Autowired
+  private NotificationService notificationService;
 
-    public NotificationController(NotificationService notificationService) {
-        this.notificationService = notificationService;
+  public NotificationController(NotificationService notificationService) {
+    this.notificationService = notificationService;
+  }
+
+  @GetMapping
+  public ResponseEntity<List<Notification>> listsNotifications() {
+    return ResponseEntity.ok(notificationService.listNotifications());
+  }
+
+  @PostMapping
+  public ResponseEntity<Notification> create(@Valid @RequestBody Notification notification, BindingResult errors) {
+    if (errors.hasErrors()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors.getFieldError().getDefaultMessage());
     }
 
-    @GetMapping
-    public ResponseEntity<List<Notification>> listsNotifications(){
-        return ResponseEntity.ok(notificationService.listNotifications());
-    }
-
-    @PostMapping
-    public ResponseEntity<Notification> create(@Valid @RequestBody Notification notification, BindingResult errors){
-        if (errors.hasErrors()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors.getFieldError().getDefaultMessage());
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(notificationService.createNotification(notification));
-    }
+    return ResponseEntity.status(HttpStatus.CREATED)
+      .body(notificationService.createNotification(notification));
+  }
 }

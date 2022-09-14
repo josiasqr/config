@@ -10,25 +10,25 @@ import java.util.List;
 
 @Service
 public class InTransferService implements TransferService {
-    @Autowired
-    private TransferRepository transferRepository;
+  @Autowired
+  private TransferRepository transferRepository;
 
-    public InTransferService(TransferRepository transferRepository) {
-        this.transferRepository = transferRepository;
-    }
+  public InTransferService(TransferRepository transferRepository) {
+    this.transferRepository = transferRepository;
+  }
 
-    @Override
-    public List<Transfer> listTransfers() {
-        return transferRepository.findAll();
-    }
+  @Override
+  public List<Transfer> listTransfers() {
+    return transferRepository.findAll();
+  }
 
-    @Override
-    public Transfer getCodeTransfer(String code) {
-        return transferRepository.findByCode(code);
-    }
+  @Override
+  public Transfer getCodeTransfer(String code) {
+    return transferRepository.findByCode(code);
+  }
 
-    @Override
-    public Transfer createTransfer(Transfer transfer) {
-        return transferRepository.save(transfer);
-    }
+  @Override
+  public Transfer createTransfer(Transfer transfer) {
+    return transferRepository.save(transfer);
+  }
 }

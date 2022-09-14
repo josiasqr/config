@@ -16,37 +16,37 @@ import java.util.List;
 @RestController
 @RequestMapping("/transfers")
 public class TransferController {
-    @Autowired
-    private TransferService transferService;
+  @Autowired
+  private TransferService transferService;
 
-    public TransferController(TransferService transferService) {
-        this.transferService = transferService;
+  public TransferController(TransferService transferService) {
+    this.transferService = transferService;
+  }
+
+  @GetMapping
+  public ResponseEntity<List<Transfer>> listTransfers() {
+    return ResponseEntity.ok(transferService.listTransfers());
+  }
+
+  @GetMapping("/{code}")
+  public ResponseEntity<Transfer> listTransactionsCode(@PathVariable("code") String code) {
+    Transfer transfer = transferService.getCodeTransfer(code);
+
+    if (transfer == null) {
+      return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Transfer>> listTransfers(){
-        return ResponseEntity.ok(transferService.listTransfers());
+    return ResponseEntity.ok(transfer);
+  }
+
+  @PostMapping
+  public ResponseEntity<Transfer> createTransaction(@Valid @RequestBody Transfer transfer, BindingResult errors) {
+    if (errors.hasErrors()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors.getFieldError().getDefaultMessage());
     }
+    transfer.setCode(transfer.code());
+    transfer.setRegistrationDate(LocalDateTime.now());
 
-    @GetMapping("/{code}")
-    public ResponseEntity<Transfer> listTransactionsCode(@PathVariable("code") String code){
-        Transfer transfer = transferService.getCodeTransfer(code);
-
-        if(transfer == null){
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(transfer);
-    }
-
-    @PostMapping
-    public ResponseEntity<Transfer> createTransaction(@Valid @RequestBody Transfer transfer, BindingResult errors){
-        if (errors.hasErrors()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors.getFieldError().getDefaultMessage());
-        }
-        transfer.setCode(transfer.code());
-        transfer.setRegistrationDate(LocalDateTime.now());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(transferService.createTransfer(transfer));
-    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(transferService.createTransfer(transfer));
+  }
 }

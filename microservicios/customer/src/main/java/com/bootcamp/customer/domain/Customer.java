@@ -15,14 +15,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Document(collection = "customer")
 public class Customer {
-    private String id;
-    @NotEmpty(message = "Name can not be empty")
-    private String name;
-    @Size(min = 8 , max = 11, message = "Document min 8 digits and max 11")
-    @NotEmpty(message = "Document can not be empty")
-    @Indexed(name = "document_index_unique", unique = true)
-    private String document;
-
-    private String type;
-    private LocalDateTime registrationDate;
+  private String id;
+  @NotEmpty(message = "Name can not be empty")
+  private String name;
+  @Size(min = 8, max = 11, message = "Document min 8 digits and max 11")
+  @NotEmpty(message = "Document can not be empty")
+  @Indexed(name = "document_index_unique", unique = true)
+  private String document;
+  private String type;
+  private LocalDateTime registrationDate;
 }

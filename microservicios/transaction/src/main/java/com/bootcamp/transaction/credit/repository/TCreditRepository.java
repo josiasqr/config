@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface TCreditRepository extends JpaRepository<TCredit, Integer> {
-    TCredit findByCode(String code);
-    List<TCredit> findByIdCredit(String idCredit);
+  TCredit findByCode(String code);
+
+  List<TCredit> findByIdCredit(String idCredit);
 }

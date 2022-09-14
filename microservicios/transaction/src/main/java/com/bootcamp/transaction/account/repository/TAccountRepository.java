@@ -9,7 +9,9 @@ import java.util.List;
 
 @Repository
 public interface TAccountRepository extends JpaRepository<TAccount, Integer> {
-    TAccount findByCode(String code);
-    List<TAccount> findByNumberAccount(Long number);
-    List<TAccount> findAllByNumberAccountAndRegistrationDateBetween(Long number, LocalDateTime dateStart, LocalDateTime dateEnd);
+  TAccount findByCode(String code);
+
+  List<TAccount> findByNumberAccount(Long number);
+
+  List<TAccount> findAllByNumberAccountAndRegistrationDateBetween(Long number, LocalDateTime dateStart, LocalDateTime dateEnd);
 }

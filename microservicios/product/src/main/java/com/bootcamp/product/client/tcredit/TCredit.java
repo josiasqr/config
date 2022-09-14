@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 @ToString
 @Data
 public class TCredit {
-    private Integer id;
-    private String code;
-    private String idCredit;
-    private String operation;
-    private Double amount;
-    private LocalDateTime registrationDate;
+  private Integer id;
+  private String code;
+  private String idCredit;
+  private String operation;
+  private Double amount;
+  private LocalDateTime registrationDate;
 }

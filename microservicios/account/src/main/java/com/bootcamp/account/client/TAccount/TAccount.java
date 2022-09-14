@@ -12,10 +12,10 @@ import java.util.Random;
 @ToString
 @Data
 public class TAccount {
-    private Integer id;
-    private String code;
-    private Long numberAccount;
-    private String operation;
-    private Double amount;
-    private LocalDateTime registrationDate;
+  private Integer id;
+  private String code;
+  private Long numberAccount;
+  private String operation;
+  private Double amount;
+  private LocalDateTime registrationDate;
 }

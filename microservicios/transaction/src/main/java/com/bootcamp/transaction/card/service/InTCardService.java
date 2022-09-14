@@ -14,48 +14,47 @@ import java.util.List;
 
 @Service
 public class InTCardService implements TCardService {
-    @Autowired
-    private TCardRepository tCardRepository;
+  @Autowired
+  private TCardRepository tCardRepository;
 
-    private WClient wClient;
+  private WClient wClient;
 
-    public InTCardService(TCardRepository tCardRepository, WClient wClient) {
-        this.tCardRepository = tCardRepository;
-        this.wClient = wClient;
+  public InTCardService(TCardRepository tCardRepository, WClient wClient) {
+    this.tCardRepository = tCardRepository;
+    this.wClient = wClient;
+  }
+
+  @Override
+  public List<TCard> listTransactions() {
+    return tCardRepository.findAll();
+  }
+
+  @Override
+  public List<TCard> listTransactionNumberAccount(Long number) {
+    return tCardRepository.findByNumberAccount(number);
+  }
+
+  @Override
+  public TCard getCodeTransaction(String code) {
+    return tCardRepository.findByCode(code);
+  }
+
+  @Override
+  public TCard createTransaction(TCard tCard) {
+    if (tCard.getOperation().equals("CREDITO")) {
+      return tCardRepository.save(tCard);
+    } else if (tCard.getOperation().equals("CONSUMO")) {
+      Card card = wClient.getCard(tCard.getNumberAccount());
+      if (tCard.validate(card.getLimitCredit(), tCard.getAmount())) {
+        card.setLimitCredit(card.getLimitCredit() - tCard.getAmount());
+        wClient.putCard(card.getNumberAccount(), card);
+
+        tCard.setAmount(tCard.getAmount() * -1);
+        return tCardRepository.save(tCard);
+      }
+
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente = S/" + card.getLimitCredit());
     }
-
-    @Override
-    public List<TCard> listTransactions() {
-        return tCardRepository.findAll();
-    }
-
-    @Override
-    public List<TCard> listTransactionNumberAccount(Long number) {
-        return tCardRepository.findByNumberAccount(number);
-    }
-
-    @Override
-    public TCard getCodeTransaction(String code) {
-        return tCardRepository.findByCode(code);
-    }
-
-    @Override
-    public TCard createTransaction(TCard tCard) {
-        if(tCard.getOperation().equals("CREDITO")){
-            return tCardRepository.save(tCard);
-        }
-        else if(tCard.getOperation().equals("CONSUMO")){
-            Card card = wClient.getCard(tCard.getNumberAccount());
-            if(tCard.validate(card.getLimitCredit(), tCard.getAmount())){
-                card.setLimitCredit(card.getLimitCredit()-tCard.getAmount());
-                wClient.putCard(card.getNumberAccount(), card);
-
-                tCard.setAmount(tCard.getAmount()*-1);
-                return tCardRepository.save(tCard);
-            }
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente = S/" + card.getLimitCredit());
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Operación inválida = " + tCard.getOperation());
-    }
+    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Operación inválida = " + tCard.getOperation());
+  }
 }

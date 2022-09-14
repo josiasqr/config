@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface TCardRepository extends JpaRepository<TCard, Integer> {
-    TCard findByCode(String code);
-    List<TCard> findByNumberAccount(Long number);
+  TCard findByCode(String code);
+
+  List<TCard> findByNumberAccount(Long number);
 }

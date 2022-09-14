@@ -6,11 +6,13 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@Data @ToString @Builder
+@Data
+@ToString
+@Builder
 public class Customer {
-    private String id;
-    private String name;
-    private String document;
-    private String type;
-    private LocalDateTime registrationDate;
+  private String id;
+  private String name;
+  private String document;
+  private String type;
+  private LocalDateTime registrationDate;
 }

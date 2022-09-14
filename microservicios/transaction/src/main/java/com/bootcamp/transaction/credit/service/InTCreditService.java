@@ -15,49 +15,48 @@ import java.util.List;
 
 @Service
 public class InTCreditService implements TCreditService {
-    @Autowired
-    private TCreditRepository tCreditRepository;
+  @Autowired
+  private TCreditRepository tCreditRepository;
 
-    private WClient wClient;
+  private WClient wClient;
 
-    public InTCreditService(TCreditRepository tCreditRepository, WClient wClient) {
-        this.tCreditRepository = tCreditRepository;
-        this.wClient = wClient;
+  public InTCreditService(TCreditRepository tCreditRepository, WClient wClient) {
+    this.tCreditRepository = tCreditRepository;
+    this.wClient = wClient;
+  }
+
+  @Override
+  public List<TCredit> listTransactions() {
+    return tCreditRepository.findAll();
+  }
+
+  @Override
+  public List<TCredit> listTransactionIdCredits(String idCredit) {
+    return tCreditRepository.findByIdCredit(idCredit);
+  }
+
+  @Override
+  public TCredit getCodeTransaction(String code) {
+    return tCreditRepository.findByCode(code);
+  }
+
+  @Override
+  public TCredit createTransaction(TCredit tCredit) {
+    if (tCredit.getOperation().equals("CREDITO")) {
+      return tCreditRepository.save(tCredit);
+    } else if (tCredit.getOperation().equals("PAGO")) {
+      Credit credit = wClient.getCredit(tCredit.getIdCredit());
+
+      if (tCredit.validate(credit.getAmount(), tCredit.getAmount())) {
+        credit.setAmount(credit.getAmount() - tCredit.getAmount());
+
+        wClient.putCredit(tCredit.getIdCredit(), credit);
+
+        return tCreditRepository.save(tCredit);
+      }
+
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pago inválido, deuda pendiente = S/" + credit.getAmount());
     }
-
-    @Override
-    public List<TCredit> listTransactions() {
-        return tCreditRepository.findAll();
-    }
-
-    @Override
-    public List<TCredit> listTransactionIdCredits(String idCredit) {
-        return tCreditRepository.findByIdCredit(idCredit);
-    }
-
-    @Override
-    public TCredit getCodeTransaction(String code) {
-        return tCreditRepository.findByCode(code);
-    }
-
-    @Override
-    public TCredit createTransaction(TCredit tCredit) {
-        if(tCredit.getOperation().equals("CREDITO")){
-            return tCreditRepository.save(tCredit);
-        }
-        else if(tCredit.getOperation().equals("PAGO")){
-            Credit credit = wClient.getCredit(tCredit.getIdCredit());
-
-            if(tCredit.validate(credit.getAmount(), tCredit.getAmount())){
-                credit.setAmount(credit.getAmount()-tCredit.getAmount());
-
-                wClient.putCredit(tCredit.getIdCredit(), credit);
-
-                return tCreditRepository.save(tCredit);
-            }
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pago inválido, deuda pendiente = S/" + credit.getAmount());
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Operación inválida = " + tCredit.getOperation());
-    }
+    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Operación inválida = " + tCredit.getOperation());
+  }
 }

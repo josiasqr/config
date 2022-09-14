@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface CustomerRepository extends ReactiveMongoRepository<Customer, Integer> {
-    Flux<Customer> findByType(String type);
-    Mono<Customer> findByDocument(String document);
-    Flux<Customer> findAllByRegistrationDateBetween(LocalDateTime dateStart, LocalDateTime dateEnd);
+  Flux<Customer> findByType(String type);
+  Mono<Customer> findByDocument(String document);
+  Flux<Customer> findAllByRegistrationDateBetween(LocalDateTime dateStart, LocalDateTime dateEnd);
 }

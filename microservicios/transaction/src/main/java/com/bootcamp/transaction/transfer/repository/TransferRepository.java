@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransferRepository extends JpaRepository<Transfer, Integer> {
-    Transfer findByCode(String code);
+  Transfer findByCode(String code);
 }

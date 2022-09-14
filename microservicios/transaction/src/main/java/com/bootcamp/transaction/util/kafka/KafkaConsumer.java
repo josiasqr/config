@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class KafkaConsumer {
-    @KafkaListener(
-            topics = "movimientos",
-            groupId = "group_id",
-            containerFactory = "TAccountListener"
-    )
+  @KafkaListener(
+    topics = "movimientos",
+    groupId = "group_id",
+    containerFactory = "TAccountListener"
+  )
 
-    // Imprime desde topico
-    public void consume(TAccount tAccount) {
-        System.out.println("TAccount Consumer topic = " + tAccount);
+  // Imprime desde topico
+  public void consume(TAccount tAccount) {
+    System.out.println("TAccount Consumer topic = " + tAccount);
 
-    }
+  }
 }

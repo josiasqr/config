@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface CardRepository extends ReactiveMongoRepository<Card, String> {
-    Flux<Card> findByCustomerDocument(String document);
-    Mono<Card> findByNumberAccount(Long number);
+  Flux<Card> findByCustomerDocument(String document);
+
+  Mono<Card> findByNumberAccount(Long number);
 }
