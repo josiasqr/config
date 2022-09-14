@@ -5,7 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Random;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
@@ -43,5 +45,21 @@ public class TAccount {
         Random r = new Random();
         Integer random = r.nextInt(999999);
         return random.toString();
+    }
+
+    public Boolean commission(Integer limit, Integer countTransactions){
+        if(limit<countTransactions){
+            return true;
+        }
+
+        return false;
+    }
+
+    public LocalDateTime firstDayWeek(){
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayWeek = today.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDateTime parse = LocalDateTime.parse(firstDayWeek + "T00:00:00.00");
+
+        return parse;
     }
 }

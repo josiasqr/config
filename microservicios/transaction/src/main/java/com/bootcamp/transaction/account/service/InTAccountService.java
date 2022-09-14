@@ -12,7 +12,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InTAccountService implements TAccountService {
@@ -34,6 +36,11 @@ public class InTAccountService implements TAccountService {
     }
 
     @Override
+    public List<TAccount> listTransactionsOfWeek(Long number, LocalDateTime dateStart, LocalDateTime dateEnd) {
+        return tAccountRepository.findAllByNumberAccountAndRegistrationDateBetween(number, dateStart, dateEnd);
+    }
+
+    @Override
     public TAccount getCodeTransaction(String code) {
         return tAccountRepository.findByCode(code);
     }
@@ -47,34 +54,70 @@ public class InTAccountService implements TAccountService {
     public TAccount createTransaction(TAccount tAccount) {
         Account account = wClient.getAccount(tAccount.getNumberAccount());
 
-        if(tAccount.getOperation().equals("APERTURA")){
-            kafkaTemplate.send("movimientos", tAccount);
+        // commission
+        List<TAccount> countTransactions = listTransactionsOfWeek(tAccount.getNumberAccount(), tAccount.firstDayWeek(), LocalDateTime.now())
+                .stream()
+                .filter(tAcc -> tAcc.getOperation().equals("DEPOSITO") || tAcc.getOperation().equals("RETIRO"))
+                .collect(Collectors.toList());
+        TAccount commission = TAccount.builder()
+                .code(tAccount.code())
+                .numberAccount(tAccount.getNumberAccount())
+                .operation("COMISION")
+                .amount(-7.5)
+                .registrationDate(LocalDateTime.now())
+                .build();
+        System.out.println("countTransactions.size() = " + countTransactions.size());
 
-            return tAccountRepository.save(tAccount);
-        }
+        switch (tAccount.getOperation()){
+            case "APERTURA":
+                TAccount newTAccount = tAccountRepository.save(tAccount);
 
-        if(tAccount.getOperation().equals("DEPOSITO")){
-            account.setBalance(account.getBalance()+tAccount.getAmount());
-            wClient.putAccount(tAccount.getNumberAccount(), account);
+                kafkaTemplate.send("movimientos", newTAccount); // Kafka producer
 
-            kafkaTemplate.send("movimientos", tAccount);
+                return newTAccount;
 
-            return tAccountRepository.save(tAccount);
-        }
-        else if(tAccount.getOperation().equals("RETIRO")){
-            if(tAccount.validate(account.getBalance(), tAccount.getAmount(), account.getCommission())){
-                account.setBalance(account.getBalance()-tAccount.getAmount());
+            case "DEPOSITO":
+                account.setBalance(account.getBalance()+tAccount.getAmount());
+                System.out.println("account.getBalance() = " + account.getBalance());
                 wClient.putAccount(tAccount.getNumberAccount(), account);
 
-                tAccount.setAmount(tAccount.getAmount()*-1);
-                kafkaTemplate.send("movimientos", tAccount);
+                TAccount newTAccount1 = tAccountRepository.save(tAccount);
 
-                return tAccountRepository.save(tAccount);
-            }
+                kafkaTemplate.send("movimientos", newTAccount1); // Kafka producer
 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente = S/" + account.getBalance());
+                if(tAccount.commission(account.getLimitTransaction(), countTransactions.size()+1)){
+                    account.setBalance(account.getBalance()-7.5);
+                    System.out.println("account.getBalance() comision = " + account.getBalance());
+                    wClient.putAccount(tAccount.getNumberAccount(), account);
+                    tAccountRepository.save(commission);
+                }
+
+                return newTAccount1;
+
+            case "RETIRO":
+                if(tAccount.validate(account.getBalance(), tAccount.getAmount(), 7.5)){
+                    account.setBalance(account.getBalance()-tAccount.getAmount());
+                    wClient.putAccount(tAccount.getNumberAccount(), account);
+
+                    tAccount.setAmount(tAccount.getAmount()*-1);
+
+                    TAccount newTAccount2 = tAccountRepository.save(tAccount);
+
+                    kafkaTemplate.send("movimientos", newTAccount2); // Kafka producer
+
+                    if(tAccount.commission(account.getLimitTransaction(), countTransactions.size()+1)){
+                        account.setBalance(account.getBalance()-7.5);
+                        wClient.putAccount(tAccount.getNumberAccount(), account);
+                        tAccountRepository.save(commission);
+                    }
+
+                    return newTAccount2;
+                }
+
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente = S/" + account.getBalance());
+
+            default:
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Operación inválida = " + tAccount.getOperation());
         }
-
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Operación inválida = " + tAccount.getOperation());
     }
 }

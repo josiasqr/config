@@ -41,7 +41,8 @@ public class InCustomerService implements CustomerService {
             Mono<Customer> customerMono = customerRepository.save(customer);
             return customerMono;
         }catch (MongoWriteConcernException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe un usuario con el document = '" + customer.getDocument());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Ya existe un usuario con el document = '" + customer.getDocument());
         }
     }
 

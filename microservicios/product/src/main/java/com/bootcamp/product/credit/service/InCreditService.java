@@ -40,7 +40,6 @@ public class InCreditService implements CreditService {
 
     @Override
     public Mono<Credit> createCredit(Credit credit) {
-
         return wClient.getCustomer(credit.getCustomerDocument())
                 .flatMap(customer -> listCreditsCustomerDocument(customer.getDocument())
                         .count()

@@ -3,6 +3,7 @@ package com.bootcamp.transaction.account.controller;
 import com.bootcamp.transaction.account.domain.TAccount;
 import com.bootcamp.transaction.account.domain.TAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,13 @@ public class TAccountController {
     @GetMapping
     public ResponseEntity<List<TAccount>> listTransactions(){
         return ResponseEntity.ok(tAccountService.listTransactions());
+    }
+
+    @GetMapping("/listTransactionsOfWeek")
+    public ResponseEntity<List<TAccount>> listTransactionsOfWeek(){
+        TAccount tAccount = new TAccount();
+
+        return ResponseEntity.ok(tAccountService.listTransactionsOfWeek(3927198245224716L, tAccount.firstDayWeek(), LocalDateTime.now()));
     }
 
     @GetMapping("/numberAccount/{number}")
